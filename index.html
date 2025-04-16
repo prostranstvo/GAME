@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introductory Algebra Challenge</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: linear-gradient(to bottom right, #3c4d5c, #232e3a);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: #facc15;
+      color: black;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      max-width: 80%;
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: 1rem;
+    }
+    .choice {
+      background: white;
+      color: black;
+      padding: 1.25rem;
+      font-size: 1.5rem;
+      text-align: center;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .choice:hover {
+      background: #e5e7eb;
+    }
+    .feedback {
+      margin-top: 1rem;
+      font-size: 1.25rem;
+    }
+    .score {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: white;
+      color: black;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      font-weight: bold;
+    }
+    .animation {
+      position: absolute;
+      top: 30%;
+      font-size: 2.5rem;
+      color: #86efac;
+      font-weight: bold;
+      animation: pop 2s ease;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      20% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="score" id="scoreBox">Score: 0</div>
+  <h1>Introductory Algebra Challenge</h1>
+  <div class="card" id="questionBox"></div>
+  <div class="grid" id="choices"></div>
+  <div class="feedback" id="feedback"></div>
+  <div class="animation" id="animation" style="display:none;">🎯 Great Job!</div>
+
+  <script>
+    const questionBox = document.getElementById("questionBox");
+    const choicesBox = document.getElementById("choices");
+    const feedbackBox = document.getElementById("feedback");
+    const scoreBox = document.getElementById("scoreBox");
+    const animation = document.getElementById("animation");
+
+    let index = 0;
+    let score = 0;
+
+    const presetProblems = [
+      { question: "Solve for a: a + b = 30 and b - 3 = 7. What is a?", answer: 20 },
+      { question: "Five times a number increased by seven is equal to forty-seven. What is the number?", answer: 8 },
+      { question: "The sum of two consecutive integers is 65. What is the smaller number?", answer: 32 },
+      { question: "There are 96 golf balls placed into two buckets, and one bucket has 28 more balls than the other. How many golf balls are in the smaller bucket?", answer: 34 },
+      { question: "The sum of three consecutive integers is 42. What is the smallest number?", answer: 13 },
+      { question: "If two numbers have a sum of 68 and a difference of 22, what is the smaller number?", answer: 23 }
+    ];
+
+    const generateQuestionSet = (count = 20) => {
+      const generated = [];
+      for (let i = 0; i < count; i++) {
+        generated.push(presetProblems[i % presetProblems.length]);
+      }
+      return generated;
+    };
+
+    const generateChoices = (correct) => {
+      const set = new Set([correct]);
+      while (set.size < 3) {
+        const offset = Math.floor(Math.random() * 5) + 1;
+        const alt = Math.random() > 0.5 ? correct + offset : correct - offset;
+        if (alt >= 0 && !set.has(alt)) set.add(alt);
+      }
+      return Array.from(set).sort(() => Math.random() - 0.5);
+    };
+
+    const questions = generateQuestionSet();
+
+    const render = () => {
+      if (index >= questions.length) {
+        document.body.innerHTML = \`<h1>Game Over</h1><p>You answered \${score} out of \${questions.length} correctly.</p>\`;
+        return;
+      }
+
+      const q = questions[index];
+      const choices = generateChoices(q.answer);
+
+      questionBox.textContent = q.question;
+      choicesBox.innerHTML = "";
+      feedbackBox.textContent = "";
+
+      choices.forEach(val => {
+        const btn = document.createElement("div");
+        btn.className = "choice";
+        btn.textContent = val;
+        btn.onclick = () => handleChoice(val === q.answer);
+        choicesBox.appendChild(btn);
+      });
+    };
+
+    const handleChoice = (correct) => {
+      if (correct) {
+        score++;
+        feedbackBox.textContent = "✅ Correct!";
+        animation.style.display = "block";
+        scoreBox.textContent = \`Score: \${score}\`;
+        setTimeout(() => {
+          animation.style.display = "none";
+          index++;
+          render();
+        }, 1500);
+      } else {
+        feedbackBox.textContent = "❌ Try Again!";
+      }
+    };
+
+    render();
+  </script>
+</body>
+</html>
