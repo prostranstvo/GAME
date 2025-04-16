@@ -134,7 +134,10 @@ document.querySelectorAll(".difficulty-btn").forEach((btn) => {
     index = 0;
     problems = Array.from({ length: 20 }, () => generateProblem(difficulty));
     scoreBox.textContent = `Score: ${score}`;
-    difficultyScreen.style.display = "none";
+difficultyScreen.classList.add("fade-out");
+setTimeout(() => {
+  difficultyScreen.style.display = "none";
+}, 500);
     title.style.display = "none";
     questionBox.style.display = "block";
     choicesBox.style.display = "grid";
