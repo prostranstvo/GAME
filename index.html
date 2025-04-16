@@ -1,23 +1,25 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Algebra Master</title>
+  <title>Algebra Slice Master</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <h1 id="title" class="title-center">Algebra Slice Master</h1>
   <div class="score" id="scoreBox" style="display: none;">Score: 0</div>
-  <h1 id="title">Algebra Slice Master</h1>
   <div class="card" id="questionBox" style="display: none;"></div>
   <div class="grid" id="choices" style="display: none;"></div>
   <div class="feedback" id="feedback" style="display: none;"></div>
   <div class="animation" id="animation" style="display:none;"></div>
 
   <div class="difficulty" id="difficultyScreen">
-<h1>Get a point when your answer is right, lose a point when your answer is incorrect.</h1>
-    <h2>Select Difficulty</h2>
+    <p class="rules">
+      Answer math problems correctly to earn points. 🐱
+      <br>Each wrong answer takes a point away. 💥
+      <br>Choose a difficulty to start:
+    </p>
     <div class="button-grid">
       <button class="difficulty-btn" data-level="easy">Easy</button>
       <button class="difficulty-btn" data-level="medium">Medium</button>
@@ -26,8 +28,5 @@
   </div>
 
   <script src="script.js"></script>
-
-<p>hello@webmilk.ca</p>
 </body>
 </html>
-
